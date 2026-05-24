@@ -2,109 +2,99 @@
 包含完整的MADDPG实现代码（单个智能体，三个智能体）及注意事项
 
 
-准备工作
-电脑安装 Anaconda/Miniconda
-________________________________________
-步骤 1：创建全新空白环境（严格匹配 Python3.10，我用的是3.10.19），其中fct是环境名（可自定义）
-bash
+# 准备工作-环境搭建
+首先电脑要安装 Anaconda/Miniconda
+
+## 步骤 1：创建全新空白环境（严格匹配 Python3.10，我用的是3.10.19），其中fct是环境名（可自定义）
+```
 conda create -n fct python=3.10 -y
-
-步骤 2：激活新环境
-bash
+```
+## 步骤 2：激活新环境
+```
 conda activate fct
-
-步骤 3：切换到requirements.txt 文件的目录，如果该文件就在根目录，则无需此步骤
-bash
-# Windows 示例（如果在D盘）
+```
+## 步骤 3：切换到requirements.txt 文件的目录，如果该文件就在根目录，则无需此步骤
+ Windows 示例（如果在D盘）
+ ```
 cd D:\你的项目文件夹路径
-
-# Linux/Mac 示例
+```
+Linux/Mac 示例
+```
 cd /home/xxx/你的项目文件夹路径
+```
 (必须进入存放 requirements.txt 的文件夹)
-
-步骤 4：因为所使用的gym是0.20.0低版本的，所以需要使用较旧的兼容工具，这三个是确定可行的，在安装完所有依赖之后pip可以升级到最新版本。
-bash
+## 步骤 4：因为所使用的gym是0.20.0低版本的，所以需要使用较旧的兼容工具，这三个是确定可行的，在安装完所有依赖之后pip可以升级到最新版本。
+```
 pip install pip==24.0 setuptools==59.8.0 wheel==0.38.4
-
-步骤 5：一键安装所有依赖，前面一定要确保进入requirements.txt文件的目录
-bash
+```
+## 步骤 5：一键安装所有依赖，前面一定要确保进入requirements.txt文件的目录
+```
 pip install -r requirements.txt --no-build-isolation -f https://download.pytorch.org/whl/cu113/torch_stable.html
+```
 
-
-
+# 运行代码（训练）
 在安装好环境后就可以进入VS Code运行代码了，当然，其他的编译环境也可以。运行代码很简单，打开VS Code，然后点击左上角箭头所指位置，再点击打开文件夹 
 再双击选择所给文件，如图
- 
+ <img width="954" height="486" alt="image" src="https://github.com/user-attachments/assets/392cacd4-cc5b-43a9-a174-efb4939cd400" />
+
 打开后选择刚刚建好的环境，首先点击下图位置
- 
+ <img width="929" height="203" alt="image" src="https://github.com/user-attachments/assets/96561dd9-869f-4f00-971d-17abfaa204b5" />
+
 然后选择该环境即可，成功了就是上图的样子
- 
+ <img width="875" height="406" alt="image" src="https://github.com/user-attachments/assets/530b5d30-60b0-4280-9e67-874dcc953eba" />
 
 之后选择main.py文件，点击下图位置即可运行代码
- 
+ <img width="954" height="290" alt="image" src="https://github.com/user-attachments/assets/89b7de98-e48a-4e65-b95d-dd9339c00950" />
 
-
-
-
-关于代码的修改，其中在multi_agent_env.py文件可以修改智能体和障碍物的数量，位置，大小等等，如图位置修改，注意，该文件里面智能体和障碍物都要改两处，图中各自只给了一处，另一处是一样的，代码中往下翻翻能看到
-
- 
-
- 
+# 代码修改
+关于代码的修改，其中在multi_agent_env.py文件可以修改智能体和障碍物的数量，位置，大小等等，如图位置修改，注意，该文件里面智能体和障碍物都要改两处，图中各自只给了一处，另一处是一样的，在代码中往下翻翻能看到
+<img width="922" height="852" alt="image" src="https://github.com/user-attachments/assets/f5fe900c-360a-4428-a504-f16caf92d135" />
+<img width="955" height="462" alt="image" src="https://github.com/user-attachments/assets/905ebe1d-0ad8-48f9-a02d-fc49175354e2" />
 
 但是注意，该份代码智能体数目随便改没问题，但是障碍物数量上限为8个，在上图的shape=4*num_agents+32+2里面能看到，其中位置占两维，速度占两维，所以一个智能体或障碍物因为都有位置和速度，所以各自都是占4维的，还有个目标点，只有位置，所以占两维。以上是这样计算的，如果障碍物数目小于8个，那么关于维度就可以什么都不管，因为剩余的会自动视为0，如果要超过8个，就需要改变32，比如障碍物数量改为10个，就需要将32改为40，其他不变，如果要改的话就需要改两处的32，还有一个在下图位置，修改方法一样的
- 
+ <img width="956" height="150" alt="image" src="https://github.com/user-attachments/assets/efdde574-e6c8-41a4-9881-af405c418640" />
 
 同时，如果修改了智能体数目，还需要在main.py文件中下图位置相应增删（复制粘贴即可），这是打印输出每个智能体的奖励情况的
- 
+ <img width="955" height="253" alt="image" src="https://github.com/user-attachments/assets/d9f6dbe0-63d3-44e3-a8e9-a822e2be0fe8" />
+
 
 看起来很复杂？不是，如果你不动智能体数目，只修改障碍物数目，并且障碍物数目在8个以内就随便改，你什么都不用操心，改了障碍物列表即可，如果要动智能体数目，才需要在上图位置增删，反正不难，认真理解都会的，以上就是关于代码的修改，还有超参数的设定，比如经验池大小，软更新参数，学习率，网络层数等等，都在maddpg.py文件里面，看情况修改即可
 
-
-
-
+# 模型测试
 还有关于测试，代码在test.py文件里面，操作方法和main.py文件一样，只是需要将训练好的模型放到代码的指定位置，如图，指定路径和模型名称即可，注意后缀
- 
+ <img width="954" height="507" alt="image" src="https://github.com/user-attachments/assets/b2e27341-736a-4692-9899-07203d3eca87" />
 
-
-
+# 文件说明
 接下来是每个文件夹的作用
 
-Log文件夹：存放的就是每个智能体每一个step的奖惩情况，可以通过观察分析该日志来判断智能体的行为是否合理，以此来修改奖励函数，如图
+## Log文件夹：存放的就是每个智能体每一个step的奖惩情况，可以通过观察分析该日志来判断智能体的行为是否合理，以此来修改奖励函数，如图
+ <img width="702" height="492" alt="image" src="https://github.com/user-attachments/assets/8d2d47d5-b548-4dec-bd1c-5901b43d028d" />
+
+## Model文件夹：存放的就是训练时较好的模型，后续可以直接使用这些模型用以测试或是二次训练（与测试流程一样，只不过是在main.py文件里面进行），如下图所示
+<img width="957" height="152" alt="image" src="https://github.com/user-attachments/assets/79558652-2af0-4fc5-a371-7d9e2a70ab45" />
+
+使用该文件夹里的模型只需要复制模型名字到指定位置即可。值得注意的是，只有维度一样的情况，模型才能使用，比如你训练好的是3个智能体的模型，拿去跑两个智能体的环境，那肯定是不行的，因为一个是12维，一个是8维，同理障碍物也是，障碍物是训练的5个，你拿去跑10个障碍物的环境，肯定也不行，但是我代码预留了冗余，就是前面那个32维，只要在8个障碍物之内，是可以通用的，比如训练好的5个障碍物的模型，只要智能体数目不变，你用在3个障碍物的环境或者7个障碍物的环境都是可以用的
  
+## Plots文件夹：用来存放奖励图和损失函数图的地方，如图
+<img width="956" height="323" alt="image" src="https://github.com/user-attachments/assets/f66e6971-3905-4ec5-b49e-bd8c80d908fd" />
 
-Model文件夹：存放的就是训练时较好的模型，后续可以直接使用这些模型用以测试或是二次训练（与测试流程一样，只不过是在main.py文件里面进行），如下图所示，只需要复制模型名字到指定位置即可。值得注意的是，只有维度一样的情况，模型才能使用，比如你训练好的是3个智能体的模型，拿去跑两个智能体的环境，那肯定是不行的，因为一个是12维，一个是8维，同理障碍物也是，障碍物是训练的5个，你拿去跑10个障碍物的环境，肯定也不行，但是我代码预留了冗余，就是前面那个32维，只要在8个障碍物之内，是可以通用的，比如训练好的5个障碍物的模型，只要智能体数目不变，你用在3个障碍物的环境或者7个障碍物的环境都是可以用的
+## Videos文件夹：存放避障视频的地方，如果每一轮都保存下来，耗费时间太长，所以代码中指定了一些轮次进行保存查看，可以在代码中自行修改要保存哪些轮次的视频，如图
+ <img width="957" height="529" alt="image" src="https://github.com/user-attachments/assets/6d41064b-9ea4-431f-8724-b3d0d40565bb" />
  
-
-Plots文件夹：用来存放奖励图和损失函数图的地方，如图
-
- 
-
-
-Videos文件夹：存放避障视频的地方，如果每一轮都保存下来，耗费时间太长，所以代码中指定了一些轮次进行保存查看，可以在代码中自行修改要保存哪些轮次的视频，如图
- 
-
 那么以上就是整个项目的搭建，运行，测试，修改，讲解的所有了。
 
 
+# 效果展示
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+## 单个智能体躲避一个静态障碍物（梦开始的地方）
 <img width="800" height="600" alt="单静" src="https://github.com/user-attachments/assets/7db48ccc-9c52-4b04-b82c-e78e976de9cc" />
+## 单个智能体躲避六个动态障碍物（高难度）
 <img width="800" height="600" alt="单智六动" src="https://github.com/user-attachments/assets/36beaa8f-0045-4c11-a0e3-24bba57c14a6" />
+## 单个智能体躲避动静态障碍物（完美）
 <img width="800" height="600" alt="单智动静完美" src="https://github.com/user-attachments/assets/d0ea6c3f-761a-456b-9db4-b57ed184b96b" />
+## 两个智能体躲避六个动态障碍物（拓展）
 <img width="800" height="600" alt="双智六动" src="https://github.com/user-attachments/assets/5fbc3bf5-d74a-4f4c-b4e6-d9d33a9634fb" />
+## 三个智能体躲避动静态障碍物（应对编队任务）
 <img width="800" height="600" alt="三智动静" src="https://github.com/user-attachments/assets/64b6c0fa-fb99-4f3d-92d4-853ea24e3a78" />
 
 
