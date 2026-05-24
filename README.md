@@ -34,8 +34,10 @@ pip install -r requirements.txt --no-build-isolation -f https://download.pytorch
 
 # 运行代码（训练）
 在安装好环境后就可以进入VS Code运行代码了，当然，其他的编译环境也可以。运行代码很简单，打开VS Code，然后点击左上角箭头所指位置，再点击打开文件夹 
-再双击选择所给文件，如图
  <img width="954" height="486" alt="image" src="https://github.com/user-attachments/assets/392cacd4-cc5b-43a9-a174-efb4939cd400" />
+ 
+再双击选择所给文件，如图
+<img width="955" height="146" alt="image" src="https://github.com/user-attachments/assets/cee9e7b2-22ec-436d-9eba-9a13f0ac53b7" />
 
 打开后选择刚刚建好的环境，首先点击下图位置
  <img width="929" height="203" alt="image" src="https://github.com/user-attachments/assets/96561dd9-869f-4f00-971d-17abfaa204b5" />
